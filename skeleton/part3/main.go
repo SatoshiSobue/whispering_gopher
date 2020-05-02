@@ -31,21 +31,28 @@ type Message struct {
 func main() {
 	flag.Parse()
 
-	// TODO: Create a net.Listener listening from the address in the "listen" flag.
-
+	l, err := net.Listen("tcp", *listenAddr) // TODO: Create a net.Listener listening from the address in the "listen" flag.
+	if err != nil {
+		log.Fatal(err)
+	}
 	for {
-		// TODO: Accept a new connection from the listener.
+		c, err := l.Accept()
+		if err != nil {
+			log.Fatal(err)
+		} // TODO: Accept a new connection from the listener.
 		go serve(c)
 	}
 }
 
 func serve(c net.Conn) {
-	// TODO: Use defer to Close the connection when this function returns.
+	defer c.Close() // TODO: Use defer to Close the connection when this function returns.
 
-	// TODO: Create a new json.Decoder reading from the connection.
+	dec := json.NewDecoder(c) // TODO: Create a new json.Decoder reading from the connection.
 	for {
-		// TODO: Create an empty message.
-		// TODO: Decode a new message into the variable you just created.
-		// TODO: Print the message to the standard output.
+		var m Message // TODO: Create an empty message.
+		if err := dec.Decode(&m); err != nil {
+			log.Fatal(err)
+		} // TODO: Decode a new message into the variable you just created.
+		fmt.Printf("%#v\n", m) // TODO: Print the message to the standard output.
 	}
 }

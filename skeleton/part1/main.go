@@ -19,11 +19,16 @@ type Message struct {
 }
 
 func main() {
-	// TODO: Create a new bufio.Scanner reading from the standard input.
-	// TODO: Create a new json.Encoder writing into the standard output.
-	for /* TODO: Iterate over every line in the scanner */ {
-		// TODO: Create a new message with the read text.
-		// TODO: Encode the message, and check for errors!
+	s := bufio.NewScanner(os.Stdin)   // TODO: Create a new bufio.Scanner reading from the standard input.
+	enc := json.NewEncoder(os.Stdout) // TODO: Create a new json.Encoder writing into the standard output.
+	for s.Scan() /* TODO: Iterate over every line in the scanner */ {
+		m := Message{Body: s.Text()} // TODO: Create a new message with the read text.
+		err := enc.Encode(m)
+		if err != nil {
+			log.Fatal(err)
+		} // TODO: Encode the message, and check for errors!
 	}
-	// TODO: Check for a scan error.
+	if err := s.Err(); err != nil {
+		log.Fatal(err)
+	} // TODO: Check for a scan error.
 }

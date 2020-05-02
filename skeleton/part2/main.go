@@ -32,13 +32,15 @@ type Message struct {
 }
 
 func main() {
-	// TODO: Parse the flags.
+	flag.Parse() // TODO: Parse the flags.
 
-	// TODO: Open a new connection using the value of the "dial" flag.
-	// TODO: Don't forget to check the error.
+	c, err := net.Dial("tcp", *dialAddr) // TODO: Open a new connection using the value of the "dial" flag.
+	if err != nil {
+		log.Fatal(err)
+	} // TODO: Don't forget to check the error.
 
 	s := bufio.NewScanner(os.Stdin)
-	// TODO: Create a json.Encoder writing into the connection you created before.
+	e := json.NewEncoder(c) // TODO: Create a json.Encoder writing into the connection you created before.
 	for s.Scan() {
 		m := Message{Body: s.Text()}
 		err := e.Encode(m)
