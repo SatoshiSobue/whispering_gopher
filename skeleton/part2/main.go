@@ -18,7 +18,6 @@ package main
 
 import (
 	"bufio"
-	"encoding/json"
 	"flag"
 	"log"
 	"net"
@@ -33,12 +32,17 @@ type Message struct {
 
 func main() {
 	// TODO: Parse the flags.
-
+	flag.Parse()
 	// TODO: Open a new connection using the value of the "dial" flag.
+	c, err := net.Dial("tcp", *dialAddr)
 	// TODO: Don't forget to check the error.
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	s := bufio.NewScanner(os.Stdin)
 	// TODO: Create a json.Encoder writing into the connection you created before.
+	e := json.NewEncoder(c)
 	for s.Scan() {
 		m := Message{Body: s.Text()}
 		err := e.Encode(m)
