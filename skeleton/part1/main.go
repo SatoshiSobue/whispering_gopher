@@ -20,10 +20,22 @@ type Message struct {
 
 func main() {
 	// TODO: Create a new bufio.Scanner reading from the standard input.
+	s := bufio.NewScanner(os.Stdin)
 	// TODO: Create a new json.Encoder writing into the standard output.
-	for /* TODO: Iterate over every line in the scanner */ {
-		// TODO: Create a new message with the read text.
-		// TODO: Encode the message, and check for errors!
+	enc := json.NewEncoder(os.Stdout)
+	for s.Scan() {
+		message := Message{Body: s.Text()}
+		err := enc.Encode(message)
+		if err != nil {
+			log.Fatal(err)
+		}
 	}
+	if err := s.Err(); err != nil {
+		log.Fatal(err)
+	}
+	// for /* TODO: Iterate over every line in the scanner */ {
+	// 	// TODO: Create a new message with the read text.
+	// 	// TODO: Encode the message, and check for errors!
+	// }
 	// TODO: Check for a scan error.
 }
